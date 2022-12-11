@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.notNullValue;
 public class CreateOrderTest {
     Order order;
     OrderTrack orderTrack;
+    Response response;
     String orderMainLink = "/api/v1/orders";
     private final List<String> colors;
 
@@ -29,7 +30,9 @@ public class CreateOrderTest {
     @Before
     public void setUp() {
         RestAssured.baseURI = "https://qa-scooter.praktikum-services.ru";
-        order = new Order("Naruto", "Uchiha", "Konoha, 142 apt.", 4, "+7 800 355 35 35", 5, "2020-06-06", "Saske, come back to Konoha", colors);
+        order = new Order("Naruto", "Uchiha", "Konoha", 4, "+7 800 355 35 35", 5, "2020-06-06", "Saske, come back to Konoha", colors);
+        response = given().header("Content-type", "application/json").body(order).post(orderMainLink);
+        orderTrack = response.body().as(OrderTrack.class);
     }
 
     @Parameterized.Parameters

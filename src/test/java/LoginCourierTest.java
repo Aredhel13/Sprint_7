@@ -22,12 +22,11 @@ public class LoginCourierTest {
     @Before
     public void setUp() {
         RestAssured.baseURI = "https://qa-scooter.praktikum-services.ru";
-        courier = new Courier("courier130", "qwerty");
+        courier = new Courier("Toshiro_101", "qwerty");
         //Создание курьера
         response = given()
                 .header("Content-type", "application/json")
                 .body(courier)
-                .when()
                 .post(courierMainLink);
     }
 
@@ -40,10 +39,11 @@ public class LoginCourierTest {
                 .post(courierLoginLink);
     }
 
+
     @Test
     @DisplayName("Проверяем код и тело ответа при успешном логине курьера")
     public void checkLoginCourier() {
-        response
+        loginCourier()
                 .then()
                 .statusCode(200)
                 .and()
@@ -134,7 +134,7 @@ public class LoginCourierTest {
         given()
                 .header("Content-type", "application/json")
                 .body(courierID)
-                .delete(courierMainLink + courierID.getId());
+                .delete(courierMainLink + "/" + courierID.getId());
     }
 
 }

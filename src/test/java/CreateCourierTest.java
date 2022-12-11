@@ -19,7 +19,7 @@ public class CreateCourierTest {
     @Before
     public void setUp() {
         RestAssured.baseURI = "https://qa-scooter.praktikum-services.ru";
-        courier = new Courier("courier132", "qwerty", "Halk");
+        courier = new Courier("Toshiro_10", "qwerty999", "Хицугая");
     }
 
     @Step("Создаём курьера")
@@ -64,7 +64,17 @@ public class CreateCourierTest {
                 .assertThat()
                 .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
-
+    @Test
+    @DisplayName("Проверяем, что необходимо заполнять обязательное поле: логин")
+    public void checkStatusCodeCreateWithoutPassword() {
+        courier.setPassword("");
+        createCourier()
+                .then()
+                .statusCode(400)
+                .and()
+                .assertThat()
+                .body("message", equalTo("Недостаточно данных для создания учетной записи"));
+    }
     @Test
     @DisplayName("Проверяем, что необходимо заполнять обязательное поле: логин")
     public void checkStatusCodeCreateWithNullLogin() {
@@ -76,7 +86,6 @@ public class CreateCourierTest {
                 .assertThat()
                 .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
-
     @Test
     @DisplayName("Проверяем, что необходимо заполнять обязательное поле: пароль")
     public void checkStatusCodeCreateWithNullPassword() {
@@ -111,7 +120,7 @@ public class CreateCourierTest {
         given()
                 .header("Content-type", "application/json")
                 .body(courierID)
-                .delete(courierMainLink + courierID.getId());
+                .delete(courierMainLink + "/" + courierID.getId());
     }
 
 
